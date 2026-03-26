@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integración de Potencias Trigonométricas — UCompensar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  startup: { pageReady: () => MathJax.startup.defaultPageReady() }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#1a365d;
+  --primary-light:#2b6cb0;
+  --accent:#e53e3e;
+  --accent-soft:#feb2b2;
+  --gold:#d69e2e;
+  --gold-light:#fefcbf;
+  --green:#38a169;
+  --green-light:#c6f6d5;
+  --bg:#ffffff;
+  --bg-warm:#faf5f0;
+  --bg-cool:#f0f4f8;
+  --text:#1a202c;
+  --text-mid:#4a5568;
+  --text-light:#718096;
+  --border:#e2e8f0;
+  --shadow:0 4px 24px rgba(0,0,0,.08);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.12);
+  --radius:12px;
+  --radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+/* ── HERO ── */
+.hero{
+  position:relative;
+  background:var(--bg);
+  padding:60px 24px 50px;
+  text-align:center;
+  border-bottom:3px solid var(--primary);
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,var(--primary),var(--accent),var(--gold),var(--green));
+}
+.hero-logo{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--primary);color:#fff;
+  padding:10px 28px;border-radius:40px;
+  font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:28px;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,5vw,52px);
+  font-weight:800;
+  color:var(--primary);
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.hero h1 span{color:var(--accent)}
+.hero .subtitle{font-size:18px;color:var(--text-mid);max-width:680px;margin:0 auto 24px}
+.hero .prof{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:15px;color:var(--text-light);
+  background:var(--bg-cool);padding:8px 20px;border-radius:20px;
+}
+.carreras-strip{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+  margin-top:20px;
+}
+.carrera-badge{
+  font-size:12px;font-weight:600;padding:5px 14px;
+  border-radius:20px;border:1.5px solid var(--border);
+  color:var(--text-mid);background:var(--bg);
+  transition:.2s;cursor:default;
+}
+.carrera-badge:hover{border-color:var(--primary);color:var(--primary)}
+
+/* ── NAV ── */
+.nav-bar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+}
+.nav-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;gap:4px;
+  overflow-x:auto;padding:10px 0;
+  scrollbar-width:none;
+}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-btn{
+  flex-shrink:0;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:13px;font-weight:600;
+  padding:8px 18px;border-radius:24px;
+  border:none;cursor:pointer;
+  background:transparent;color:var(--text-mid);
+  transition:.25s;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--bg-cool);color:var(--primary)}
+.nav-btn.active{background:var(--primary);color:#fff}
+
+/* ── SECTIONS ── */
+.section{
+  display:none;
+  max-width:900px;
+  margin:0 auto;
+  padding:48px 24px 80px;
+  animation:fadeUp .5s ease;
+}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.section-tag{
+  display:inline-block;
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:8px;
+}
+.section h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(24px,4vw,36px);
+  font-weight:700;color:var(--primary);
+  margin-bottom:8px;
+}
+.section .section-desc{
+  font-size:17px;color:var(--text-mid);margin-bottom:32px;
+  border-left:3px solid var(--gold);
+  padding-left:16px;
+}
+
+/* ── CARDS ── */
+.concept-card{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:28px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+  transition:.3s;
+}
+.concept-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.concept-card h3{
+  font-family:'Playfair Display',serif;
+  font-size:20px;color:var(--primary);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.concept-card h3 .icon-circle{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:#fff;flex-shrink:0;
+}
+.card-blue .icon-circle{background:var(--primary-light)}
+.card-red .icon-circle{background:var(--accent)}
+.card-gold .icon-circle{background:var(--gold)}
+.card-green .icon-circle{background:var(--green)}
+
+/* ── TIP BOX ── */
+.tip-box{
+  background:var(--gold-light);
+  border-left:4px solid var(--gold);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:18px 22px;margin:20px 0;
+  font-size:15px;
+}
+.tip-box strong{color:var(--gold)}
+.tip-box.green{background:var(--green-light);border-color:var(--green)}
+.tip-box.green strong{color:var(--green)}
+.tip-box.red{background:#fff5f5;border-color:var(--accent)}
+.tip-box.red strong{color:var(--accent)}
+.tip-box.blue{background:var(--bg-cool);border-color:var(--primary-light)}
+.tip-box.blue strong{color:var(--primary-light)}
+
+/* ── CASE TABS ── */
+.case-tabs{
+  display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;
+}
+.case-tab{
+  flex:1;min-width:140px;
+  padding:14px 18px;
+  border:2px solid var(--border);
+  border-radius:var(--radius-sm);
+  background:var(--bg);
+  cursor:pointer;
+  text-align:center;
+  font-weight:600;font-size:14px;
+  transition:.25s;
+}
+.case-tab:hover{border-color:var(--primary-light)}
+.case-tab.active{border-color:var(--primary);background:var(--primary);color:#fff}
+
+/* ── STEP-BY-STEP ── */
+.step{
+  display:flex;gap:18px;margin-bottom:28px;
+  padding:20px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+}
+.step-num{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:16px;flex-shrink:0;
+}
+.step-content{flex:1}
+.step-content h4{font-size:16px;font-weight:700;color:var(--primary);margin-bottom:6px}
+.step-content p{font-size:15px;color:var(--text-mid)}
+
+/* ── MATH DISPLAY ── */
+.math-block{
+  background:var(--bg-cool);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:20px;
+  margin:16px 0;
+  overflow-x:auto;
+  text-align:center;
+  font-size:18px;
+}
+
+/* ── COLLAPSIBLE ── */
+.collapsible{
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  margin-bottom:12px;
+  overflow:hidden;
+}
+.collapsible-header{
+  padding:14px 20px;
+  background:var(--bg);
+  cursor:pointer;
+  font-weight:600;font-size:15px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:.2s;
+}
+.collapsible-header:hover{background:var(--bg-cool)}
+.collapsible-body{
+  display:none;
+  padding:20px;
+  background:var(--bg);
+  border-top:1px solid var(--border);
+}
+.collapsible.open .collapsible-body{display:block}
+.collapsible.open .collapsible-header .arrow{transform:rotate(180deg)}
+.arrow{transition:.3s;font-size:12px}
+
+/* ── QUIZ ── */
+.quiz-card{
+  border:2px solid var(--border);
+  border-radius:var(--radius);
+  padding:28px;
+  margin-bottom:24px;
+  background:var(--bg);
+  transition:.3s;
+}
+.quiz-card.correct{border-color:var(--green);background:#f0fff4}
+.quiz-card.wrong{border-color:var(--accent);background:#fff5f5}
+.quiz-num{
+  font-size:12px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text-light);margin-bottom:8px;
+}
+.quiz-question{font-size:17px;font-weight:600;margin-bottom:16px;color:var(--text)}
+.quiz-options{display:flex;flex-direction:column;gap:10px}
+.quiz-option{
+  padding:12px 18px;
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  font-size:15px;
+  transition:.2s;
+  background:var(--bg);
+}
+.quiz-option:hover{border-color:var(--primary-light);background:var(--bg-cool)}
+.quiz-option.selected{border-color:var(--primary);background:var(--bg-cool);font-weight:600}
+.quiz-option.correct-answer{border-color:var(--green);background:var(--green-light)}
+.quiz-option.wrong-answer{border-color:var(--accent);background:#fff5f5}
+.quiz-feedback{
+  margin-top:14px;padding:14px 18px;
+  border-radius:var(--radius-sm);
+  font-size:14px;display:none;
+}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:var(--green-light);color:#276749;border-left:4px solid var(--green)}
+.quiz-feedback.wrong{background:#fff5f5;color:#c53030;border-left:4px solid var(--accent)}
+
+/* ── CARRERA SELECTOR ── */
+.carrera-selector{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:12px;margin-bottom:32px;
+}
+.carrera-opt{
+  padding:16px;border:2px solid var(--border);
+  border-radius:var(--radius-sm);
+  cursor:pointer;text-align:center;
+  font-weight:600;font-size:14px;
+  transition:.25s;background:var(--bg);
+}
+.carrera-opt:hover{border-color:var(--primary-light);background:var(--bg-cool)}
+.carrera-opt.selected{border-color:var(--primary);background:var(--primary);color:#fff}
+.carrera-opt i{display:block;font-size:28px;margin-bottom:8px}
+
+/* ── PROGRESS ── */
+.progress-bar-container{
+  background:var(--border);border-radius:20px;height:12px;
+  margin:20px 0;overflow:hidden;
+}
+.progress-bar-fill{
+  height:100%;border-radius:20px;
+  background:linear-gradient(90deg,var(--primary),var(--green));
+  transition:width .5s ease;
+}
+
+/* ── SCORE DISPLAY ── */
+.score-display{
+  text-align:center;padding:40px;
+  border:2px solid var(--border);
+  border-radius:var(--radius);
+  margin-top:24px;
+}
+.score-big{
+  font-family:'Playfair Display',serif;
+  font-size:72px;font-weight:800;
+  color:var(--primary);
+}
+.score-big.pass{color:var(--green)}
+.score-big.fail{color:var(--accent)}
+
+/* ── CERTIFICATE ── */
+.certificate-container{display:none}
+.certificate-container.show{display:block}
+.btn-cert{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 32px;border-radius:30px;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:15px;font-weight:700;
+  border:none;cursor:pointer;
+  background:var(--green);color:#fff;
+  transition:.25s;margin-top:16px;
+}
+.btn-cert:hover{background:#2f855a;transform:translateY(-1px)}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;border-radius:28px;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:14px;font-weight:700;
+  border:none;cursor:pointer;
+  transition:.25s;
+}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-light)}
+.btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-check{background:var(--green);color:#fff}
+.btn-check:hover{background:#2f855a}
+.btn-next{background:var(--primary-light);color:#fff}
+.btn-next:hover{background:var(--primary)}
+
+/* ── TABLE ── */
+.formula-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:15px;
+}
+.formula-table th{
+  background:var(--primary);color:#fff;
+  padding:12px 16px;text-align:left;font-weight:600;
+}
+.formula-table td{
+  padding:12px 16px;border-bottom:1px solid var(--border);
+}
+.formula-table tr:hover td{background:var(--bg-cool)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .step{flex-direction:column;gap:12px}
+  .case-tabs{flex-direction:column}
+  .carrera-selector{grid-template-columns:1fr 1fr}
+  .hero{padding:40px 16px 36px}
+}
+
+/* ── EXAMPLE TOGGLE ── */
+.example-block{
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin:16px 0;
+  overflow:hidden;
+}
+.example-header{
+  padding:14px 20px;
+  background:var(--bg-cool);
+  font-weight:700;font-size:15px;
+  color:var(--primary);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.example-body{display:none;padding:24px;background:var(--bg)}
+.example-block.open .example-body{display:block}
+.example-block.open .example-header .arrow{transform:rotate(180deg)}
+
+/* Footer */
+.footer{
+  text-align:center;padding:32px 24px;
+  border-top:1px solid var(--border);
+  color:var(--text-light);font-size:13px;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ HERO ══════ -->
+<header class="hero">
+  <div class="hero-logo">
+    <i class="fas fa-graduation-cap"></i>
+    Fundación Universitaria Compensar — UCompensar
+  </div>
+  <h1>Integración de <span>Potencias</span><br>Trigonométricas</h1>
+  <p class="subtitle">Clase interactiva con teoría paso a paso, aplicaciones por carrera y evaluación con certificación</p>
+
+  <div class="carreras-strip">
+    <span class="carrera-badge"><i class="fas fa-film"></i> Ing. Multimedia</span>
+    <span class="carrera-badge"><i class="fas fa-industry"></i> Ing. Industrial</span>
+    <span class="carrera-badge"><i class="fas fa-code"></i> Ing. de Software</span>
+    <span class="carrera-badge"><i class="fas fa-server"></i> Ing. de Sistemas</span>
+    <span class="carrera-badge"><i class="fas fa-database"></i> Ciencia de Datos</span>
+    <span class="carrera-badge"><i class="fas fa-broadcast-tower"></i> Telecomunicaciones</span>
+  </div>
+</header>
+
+<!-- ══════ NAV ══════ -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showSection('intro')"><i class="fas fa-book-open"></i> Fundamentos</button>
+    <button class="nav-btn" onclick="showSection('identidades')"><i class="fas fa-key"></i> Identidades</button>
+    <button class="nav-btn" onclick="showSection('caso1')"><i class="fas fa-cube"></i> Caso 1</button>
+    <button class="nav-btn" onclick="showSection('caso2')"><i class="fas fa-cubes"></i> Caso 2</button>
+    <button class="nav-btn" onclick="showSection('caso3')"><i class="fas fa-shapes"></i> Caso 3</button>
+    <button class="nav-btn" onclick="showSection('tips')"><i class="fas fa-lightbulb"></i> Tips</button>
+    <button class="nav-btn" onclick="showSection('apps')"><i class="fas fa-rocket"></i> Aplicaciones</button>
+    <button class="nav-btn" onclick="showSection('practice')"><i class="fas fa-pen"></i> Práctica</button>
+    <button class="nav-btn" onclick="showSection('exam')"><i class="fas fa-award"></i> Evaluación</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 1: FUNDAMENTOS -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section active" id="sec-intro">
+  <span class="section-tag">Módulo 1</span>
+  <h2>Fundamentos y Motivación</h2>
+  <p class="section-desc">Antes de resolver integrales trigonométricas con potencias, necesitamos recordar por qué surgen y cuál es la estrategia general.</p>
+
+  <div class="concept-card card-blue">
+    <h3><span class="icon-circle"><i class="fas fa-question"></i></span> ¿Qué son las integrales de potencias trigonométricas?</h3>
+    <p>Son integrales de la forma:</p>
+    <div class="math-block">$$\int \sin^m(x)\,\cos^n(x)\,dx$$</div>
+    <p>donde <strong>m</strong> y <strong>n</strong> son enteros no negativos. También incluyen formas como:</p>
+    <div class="math-block">$$\int \tan^m(x)\,\sec^n(x)\,dx \qquad \text{y} \qquad \int \cot^m(x)\,\csc^n(x)\,dx$$</div>
+    <p>La clave está en <strong>reducir la potencia</strong> usando identidades trigonométricas y luego aplicar sustitución.</p>
+  </div>
+
+  <div class="concept-card card-red">
+    <h3><span class="icon-circle"><i class="fas fa-crosshairs"></i></span> ¿Cuál es la estrategia general?</h3>
+    <p>El objetivo siempre es el mismo:</p>
+    <div class="tip-box blue">
+      <strong><i class="fas fa-bullseye"></i> Estrategia central:</strong> Separar un factor trigonométrico que sirva como parte del <em>du</em> en una sustitución, y expresar el resto usando identidades para que quede en términos de una sola función.
+    </div>
+    <p>Es decir, queremos llegar a algo como <code>∫ f(u) du</code> donde <code>u</code> es <code>sin(x)</code> o <code>cos(x)</code> (o <code>tan(x)</code>, <code>sec(x)</code>, etc.).</p>
+  </div>
+
+  <div class="concept-card card-gold">
+    <h3><span class="icon-circle"><i class="fas fa-sitemap"></i></span> Los 3 Casos Fundamentales</h3>
+    <p>Ya conoces que existen tres casos. Aquí un resumen rápido antes de profundizar:</p>
+    <table class="formula-table">
+      <thead>
+        <tr><th>Caso</th><th>Condición</th><th>Estrategia</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Caso 1</strong></td>
+          <td>Al menos una potencia es <strong>impar</strong></td>
+          <td>Separar un factor, usar $\sin^2 + \cos^2 = 1$, sustituir</td>
+        </tr>
+        <tr>
+          <td><strong>Caso 2</strong></td>
+          <td>Ambas potencias son <strong>pares</strong></td>
+          <td>Usar fórmulas de ángulo medio (reducción de potencia)</td>
+        </tr>
+        <tr>
+          <td><strong>Caso 3</strong></td>
+          <td>Integrales con $\tan$ y $\sec$ (o $\cot$ y $\csc$)</td>
+          <td>Usar $\tan^2 = \sec^2 - 1$, separar factores, sustituir</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-primary" onclick="showSection('identidades')">Siguiente: Identidades clave <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 2: IDENTIDADES -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section" id="sec-identidades">
+  <span class="section-tag">Módulo 2</span>
+  <h2>Identidades Trigonométricas Esenciales</h2>
+  <p class="section-desc">Estas son las herramientas que usarás en cada problema. Domínalas y los problemas se vuelven mecánicos.</p>
+
+  <div class="concept-card card-blue">
+    <h3><span class="icon-circle"><i class="fas fa-equals"></i></span> Identidad Pitagórica Fundamental</h3>
+    <div class="math-block">$$\sin^2(x) + \cos^2(x) = 1$$</div>
+    <p>De aquí se derivan:</p>
+    <div class="math-block">$$\sin^2(x) = 1 - \cos^2(x) \qquad \cos^2(x) = 1 - \sin^2(x)$$</div>
+    <div class="tip-box">
+      <strong><i class="fas fa-star"></i> Uso:</strong> Se usa en el <strong>Caso 1</strong> (potencia impar). Después de separar un factor, conviertes todo lo demás a una sola función trigonométrica.
+    </div>
+  </div>
+
+  <div class="concept-card card-red">
+    <h3><span class="icon-circle"><i class="fas fa-divide"></i></span> Fórmulas de Ángulo Medio (Reducción de Potencia)</h3>
+    <div class="math-block">$$\sin^2(x) = \frac{1 - \cos(2x)}{2} \qquad \cos^2(x) = \frac{1 + \cos(2x)}{2}$$</div>
+    <p>Y la que surge del producto:</p>
+    <div class="math-block">$$\sin(x)\cos(x) = \frac{\sin(2x)}{2}$$</div>
+    <div class="tip-box red">
+      <strong><i class="fas fa-star"></i> Uso:</strong> Se usa en el <strong>Caso 2</strong> (ambas potencias pares). Reduces las potencias a la mitad cada vez que aplicas estas fórmulas.
+    </div>
+  </div>
+
+  <div class="concept-card card-gold">
+    <h3><span class="icon-circle"><i class="fas fa-exchange-alt"></i></span> Identidades de Tangente y Secante</h3>
+    <div class="math-block">$$\tan^2(x) = \sec^2(x) - 1 \qquad \sec^2(x) = 1 + \tan^2(x)$$</div>
+    <p>Y las diferenciales clave:</p>
+    <div class="math-block">$$\frac{d}{dx}[\tan(x)] = \sec^2(x) \qquad \frac{d}{dx}[\sec(x)] = \sec(x)\tan(x)$$</div>
+    <div class="tip-box">
+      <strong><i class="fas fa-star"></i> Uso:</strong> Se usa en el <strong>Caso 3</strong>. La relación entre tan y sec es análoga a la de sin y cos.
+    </div>
+  </div>
+
+  <div class="concept-card card-green">
+    <h3><span class="icon-circle"><i class="fas fa-infinity"></i></span> Identidades de Cotangente y Cosecante</h3>
+    <div class="math-block">$$\cot^2(x) = \csc^2(x) - 1 \qquad \csc^2(x) = 1 + \cot^2(x)$$</div>
+    <div class="math-block">$$\frac{d}{dx}[\cot(x)] = -\csc^2(x) \qquad \frac{d}{dx}[\csc(x)] = -\csc(x)\cot(x)$$</div>
+  </div>
+
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" onclick="showSection('intro')"><i class="fas fa-arrow-left"></i> Anterior</button>
+    <button class="btn btn-primary" onclick="showSection('caso1')" style="margin-left:12px">Siguiente: Caso 1 <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 3: CASO 1 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section" id="sec-caso1">
+  <span class="section-tag">Módulo 3</span>
+  <h2>Caso 1: Al menos una potencia impar</h2>
+  <p class="section-desc">Cuando $m$ o $n$ (o ambos) son impares en $\int \sin^m(x)\cos^n(x)\,dx$</p>
+
+  <div class="concept-card card-blue">
+    <h3><span class="icon-circle">1</span> Regla del Caso 1</h3>
+    <div class="tip-box green">
+      <strong><i class="fas fa-check-circle"></i> Algoritmo:</strong><br>
+      1. Identifica cuál potencia es impar (si ambas lo son, elige la menor).<br>
+      2. Separa UN factor de esa función (para usarlo como parte de <em>du</em>).<br>
+      3. Convierte el resto a la OTRA función usando $\sin^2 + \cos^2 = 1$.<br>
+      4. Haz sustitución $u =$ la otra función.<br>
+      5. Integra el polinomio resultante en $u$.
+    </div>
+  </div>
+
+  <div class="example-block" onclick="this.classList.toggle('open')">
+    <div class="example-header">
+      <span><i class="fas fa-pencil-alt"></i> Ejemplo resuelto 1: $\int \sin^3(x)\cos^2(x)\,dx$</span>
+      <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+    </div>
+    <div class="example-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Identificar la potencia impar</h4>
+          <p>$\sin^3(x)$ tiene exponente impar (3). Trabajaremos con el seno.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Separar un factor de seno</h4>
+          <div class="math-block">$$\int \sin^3(x)\cos^2(x)\,dx = \int \sin^2(x)\cos^2(x)\cdot\sin(x)\,dx$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Convertir $\sin^2(x)$ usando la identidad</h4>
+          <div class="math-block">$$= \int (1-\cos^2(x))\cos^2(x)\cdot\sin(x)\,dx$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Sustitución: $u = \cos(x)$, $du = -\sin(x)\,dx$</h4>
+          <div class="math-block">$$= -\int (1-u^2)\,u^2\,du = -\int (u^2 - u^4)\,du$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Integrar y reemplazar</h4>
+          <div class="math-block">$$= -\frac{u^3}{3} + \frac{u^5}{5} + C = -\frac{\cos^3(x)}{3} + \frac{\cos^5(x)}{5} + C$$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-block" onclick="this.classList.toggle('open')">
+    <div class="example-header">
+      <span><i class="fas fa-pencil-alt"></i> Ejemplo resuelto 2: $\int \sin^2(x)\cos^5(x)\,dx$</span>
+      <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+    </div>
+    <div class="example-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Potencia impar: $\cos^5(x)$</h4>
+          <p>Separamos un $\cos(x)$:</p>
+          <div class="math-block">$$\int \sin^2(x)\cos^4(x)\cdot\cos(x)\,dx$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Convertir $\cos^4(x) = (\cos^2(x))^2 = (1-\sin^2(x))^2$</h4>
+          <div class="math-block">$$= \int \sin^2(x)(1-\sin^2(x))^2\cos(x)\,dx$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Sustitución: $u = \sin(x)$, $du = \cos(x)\,dx$</h4>
+          <div class="math-block">$$= \int u^2(1-u^2)^2\,du = \int u^2(1-2u^2+u^4)\,du$$</div>
+          <div class="math-block">$$= \int (u^2 - 2u^4 + u^6)\,du$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Resultado</h4>
+          <div class="math-block">$$= \frac{\sin^3(x)}{3} - \frac{2\sin^5(x)}{5} + \frac{\sin^7(x)}{7} + C$$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" onclick="showSection('identidades')"><i class="fas fa-arrow-left"></i> Anterior</button>
+    <button class="btn btn-primary" onclick="showSection('caso2')" style="margin-left:12px">Siguiente: Caso 2 <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 4: CASO 2 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section" id="sec-caso2">
+  <span class="section-tag">Módulo 4</span>
+  <h2>Caso 2: Ambas potencias pares</h2>
+  <p class="section-desc">Cuando tanto $m$ como $n$ son pares en $\int \sin^m(x)\cos^n(x)\,dx$</p>
+
+  <div class="concept-card card-red">
+    <h3><span class="icon-circle">2</span> Regla del Caso 2</h3>
+    <div class="tip-box red">
+      <strong><i class="fas fa-check-circle"></i> Algoritmo:</strong><br>
+      1. Aplica las fórmulas de reducción de potencia:<br>
+      &emsp;$\sin^2(x)=\frac{1-\cos(2x)}{2}$, &ensp; $\cos^2(x)=\frac{1+\cos(2x)}{2}$<br>
+      2. Expande el producto resultante.<br>
+      3. Si quedan potencias pares de $\cos(2x)$, aplica las fórmulas de nuevo con argumento $2x$.<br>
+      4. Repite hasta que todas las potencias sean impares o de grado 1.
+    </div>
+  </div>
+
+  <div class="example-block" onclick="this.classList.toggle('open')">
+    <div class="example-header">
+      <span><i class="fas fa-pencil-alt"></i> Ejemplo resuelto: $\int \sin^2(x)\cos^2(x)\,dx$</span>
+      <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+    </div>
+    <div class="example-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Aplicar fórmulas de reducción</h4>
+          <div class="math-block">$$\sin^2(x)\cos^2(x) = \left(\frac{1-\cos(2x)}{2}\right)\left(\frac{1+\cos(2x)}{2}\right)$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Simplificar (diferencia de cuadrados)</h4>
+          <div class="math-block">$$= \frac{1-\cos^2(2x)}{4} = \frac{\sin^2(2x)}{4}$$</div>
+          <p class="tip-box blue"><strong>Truco rápido:</strong> $\sin(x)\cos(x)=\frac{\sin(2x)}{2}$, entonces $\sin^2(x)\cos^2(x)=\frac{\sin^2(2x)}{4}$.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Aplicar reducción de nuevo a $\sin^2(2x)$</h4>
+          <div class="math-block">$$\frac{1}{4}\int \sin^2(2x)\,dx = \frac{1}{4}\int \frac{1-\cos(4x)}{2}\,dx = \frac{1}{8}\int [1-\cos(4x)]\,dx$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Integrar</h4>
+          <div class="math-block">$$= \frac{1}{8}\left[x - \frac{\sin(4x)}{4}\right] + C = \frac{x}{8} - \frac{\sin(4x)}{32} + C$$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-block" onclick="this.classList.toggle('open')">
+    <div class="example-header">
+      <span><i class="fas fa-pencil-alt"></i> Ejemplo resuelto: $\int \cos^4(x)\,dx$</span>
+      <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+    </div>
+    <div class="example-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Escribir como cuadrado y aplicar fórmula</h4>
+          <div class="math-block">$$\cos^4(x) = [\cos^2(x)]^2 = \left[\frac{1+\cos(2x)}{2}\right]^2 = \frac{1+2\cos(2x)+\cos^2(2x)}{4}$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Reducir $\cos^2(2x)$ de nuevo</h4>
+          <div class="math-block">$$= \frac{1}{4}\left[1+2\cos(2x)+\frac{1+\cos(4x)}{2}\right] = \frac{1}{4}\left[\frac{3}{2}+2\cos(2x)+\frac{\cos(4x)}{2}\right]$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Integrar término a término</h4>
+          <div class="math-block">$$= \frac{3x}{8} + \frac{\sin(2x)}{4} + \frac{\sin(4x)}{32} + C$$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" onclick="showSection('caso1')"><i class="fas fa-arrow-left"></i> Anterior</button>
+    <button class="btn btn-primary" onclick="showSection('caso3')" style="margin-left:12px">Siguiente: Caso 3 <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 5: CASO 3 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section" id="sec-caso3">
+  <span class="section-tag">Módulo 5</span>
+  <h2>Caso 3: Tangente y Secante</h2>
+  <p class="section-desc">Integrales de la forma $\int \tan^m(x)\sec^n(x)\,dx$</p>
+
+  <div class="concept-card card-gold">
+    <h3><span class="icon-circle">3</span> Subcasos de Tangente-Secante</h3>
+    
+    <div class="collapsible" onclick="this.classList.toggle('open')">
+      <div class="collapsible-header">
+        <span><strong>3A:</strong> $n$ es par (potencia de secante par)</span>
+        <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Estrategia:</strong> Separar $\sec^2(x)$ como parte del $du$, y convertir el resto con $\sec^2(x)=1+\tan^2(x)$.</p>
+        <p><strong>Sustitución:</strong> $u = \tan(x)$, $du = \sec^2(x)\,dx$</p>
+        <div class="math-block">$$\int \tan^m(x)\sec^n(x)\,dx = \int \tan^m(x)\sec^{n-2}(x)\cdot\sec^2(x)\,dx$$</div>
+        <p>Luego reemplazar $\sec^{n-2}(x) = (1+\tan^2(x))^{(n-2)/2}$, sustituir $u=\tan(x)$ e integrar.</p>
+      </div>
+    </div>
+
+    <div class="collapsible" onclick="this.classList.toggle('open')">
+      <div class="collapsible-header">
+        <span><strong>3B:</strong> $m$ es impar (potencia de tangente impar)</span>
+        <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Estrategia:</strong> Separar $\sec(x)\tan(x)$ como parte del $du$, y convertir el resto con $\tan^2(x)=\sec^2(x)-1$.</p>
+        <p><strong>Sustitución:</strong> $u = \sec(x)$, $du = \sec(x)\tan(x)\,dx$</p>
+        <div class="math-block">$$\int \tan^m(x)\sec^n(x)\,dx = \int \tan^{m-1}(x)\sec^{n-1}(x)\cdot\sec(x)\tan(x)\,dx$$</div>
+      </div>
+    </div>
+
+    <div class="collapsible" onclick="this.classList.toggle('open')">
+      <div class="collapsible-header">
+        <span><strong>3C:</strong> $m$ par y $n$ impar (caso difícil)</span>
+        <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="collapsible-body">
+        <p>Este es el caso más complejo. Generalmente requiere:</p>
+        <p>• Convertir $\tan^m(x)=(\sec^2(x)-1)^{m/2}$, expandir, y usar fórmulas de reducción o integración por partes para $\int\sec^k(x)\,dx$.</p>
+        <div class="tip-box red">
+          <strong>Fórmulas útiles:</strong><br>
+          $\int \sec(x)\,dx = \ln|\sec(x)+\tan(x)|+C$<br>
+          $\int \sec^3(x)\,dx = \frac{1}{2}[\sec(x)\tan(x)+\ln|\sec(x)+\tan(x)|]+C$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-block" onclick="this.classList.toggle('open')">
+    <div class="example-header">
+      <span><i class="fas fa-pencil-alt"></i> Ejemplo: $\int \tan^3(x)\sec^4(x)\,dx$</span>
+      <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+    </div>
+    <div class="example-body">
+      <p><strong>Análisis:</strong> $n=4$ (par) y $m=3$ (impar). Podemos usar 3A o 3B. Usemos 3A ($n$ par):</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Separar $\sec^2(x)$</h4>
+          <div class="math-block">$$\int \tan^3(x)\sec^2(x)\cdot\sec^2(x)\,dx$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Convertir $\sec^2(x) = 1+\tan^2(x)$</h4>
+          <div class="math-block">$$= \int \tan^3(x)(1+\tan^2(x))\sec^2(x)\,dx$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Sustitución $u=\tan(x)$, $du=\sec^2(x)\,dx$</h4>
+          <div class="math-block">$$= \int u^3(1+u^2)\,du = \int (u^3+u^5)\,du = \frac{u^4}{4}+\frac{u^6}{6}+C$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Resultado</h4>
+          <div class="math-block">$$= \frac{\tan^4(x)}{4}+\frac{\tan^6(x)}{6}+C$$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" onclick="showSection('caso2')"><i class="fas fa-arrow-left"></i> Anterior</button>
+    <button class="btn btn-primary" onclick="showSection('tips')" style="margin-left:12px">Siguiente: Tips <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 6: TIPS -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section" id="sec-tips">
+  <span class="section-tag">Módulo 6</span>
+  <h2>Tips y Trucos Especiales</h2>
+  <p class="section-desc">Consejos que harán tu vida más fácil al resolver estos problemas.</p>
+
+  <div class="concept-card card-green">
+    <h3><span class="icon-circle"><i class="fas fa-magic"></i></span> Tip 1: El diagrama de decisión</h3>
+    <p>Antes de empezar SIEMPRE pregúntate:</p>
+    <div class="tip-box green">
+      <strong>Checklist rápido:</strong><br>
+      ¿Es $\sin$-$\cos$? → ¿Alguna potencia impar? → <strong>Caso 1</strong><br>
+      ¿Es $\sin$-$\cos$? → ¿Ambas pares? → <strong>Caso 2</strong><br>
+      ¿Es $\tan$-$\sec$? → <strong>Caso 3</strong> (revisa subcasos)<br>
+      ¿Es $\cot$-$\csc$? → Análogo al Caso 3
+    </div>
+  </div>
+
+  <div class="concept-card card-blue">
+    <h3><span class="icon-circle"><i class="fas fa-sync"></i></span> Tip 2: Si ambas son impares, elige la menor</h3>
+    <p>En $\int \sin^3(x)\cos^5(x)\,dx$, ambas son impares. Elige la de menor exponente ($\sin^3$, exponente 3) para separar un factor, así el polinomio resultante es más simple.</p>
+  </div>
+
+  <div class="concept-card card-red">
+    <h3><span class="icon-circle"><i class="fas fa-exclamation-triangle"></i></span> Tip 3: No olvides la constante del du</h3>
+    <p>Recuerda que $du = -\sin(x)\,dx$ cuando $u=\cos(x)$. Ese signo negativo es fuente del 80% de los errores.</p>
+  </div>
+
+  <div class="concept-card card-gold">
+    <h3><span class="icon-circle"><i class="fas fa-calculator"></i></span> Tip 4: Verifica derivando</h3>
+    <p>Siempre puedes comprobar tu resultado derivando la respuesta. Si al derivar obtienes el integrando original, ¡tu respuesta es correcta!</p>
+  </div>
+
+  <div class="concept-card card-green">
+    <h3><span class="icon-circle"><i class="fas fa-brain"></i></span> Tip 5: Patrones de sustitución</h3>
+    <table class="formula-table">
+      <thead><tr><th>Si separas...</th><th>Sustituyes...</th><th>Conviertes con...</th></tr></thead>
+      <tbody>
+        <tr><td>$\sin(x)\,dx$</td><td>$u=\cos(x)$</td><td>$\sin^2=1-\cos^2$</td></tr>
+        <tr><td>$\cos(x)\,dx$</td><td>$u=\sin(x)$</td><td>$\cos^2=1-\sin^2$</td></tr>
+        <tr><td>$\sec^2(x)\,dx$</td><td>$u=\tan(x)$</td><td>$\sec^2=1+\tan^2$</td></tr>
+        <tr><td>$\sec(x)\tan(x)\,dx$</td><td>$u=\sec(x)$</td><td>$\tan^2=\sec^2-1$</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" onclick="showSection('caso3')"><i class="fas fa-arrow-left"></i> Anterior</button>
+    <button class="btn btn-primary" onclick="showSection('apps')" style="margin-left:12px">Siguiente: Aplicaciones <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 7: APLICACIONES -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section" id="sec-apps">
+  <span class="section-tag">Módulo 7</span>
+  <h2>Aplicaciones por Carrera</h2>
+  <p class="section-desc">¿Dónde se usa esto en la vida real? Aquí te mostramos conexiones directas con tu campo profesional.</p>
+
+  <div class="concept-card card-blue">
+    <h3><span class="icon-circle"><i class="fas fa-film"></i></span> Ingeniería Multimedia</h3>
+    <p><strong>Procesamiento de señales de audio y video:</strong> Las señales de audio se representan como superposición de funciones trigonométricas (series de Fourier). Para calcular la <em>potencia promedio</em> de una señal, necesitas evaluar integrales como $\int_0^{2\pi}\sin^2(n\omega t)\,dt$ o productos de funciones trigonométricas con distintas potencias. Esto es fundamental en compresión de audio (MP3), síntesis de sonido y rendering gráfico.</p>
+    <div class="math-block">$$P_{promedio} = \frac{1}{T}\int_0^T [A\sin(\omega t)]^2\,dt = \frac{1}{T}\int_0^T A^2\sin^2(\omega t)\,dt$$</div>
+  </div>
+
+  <div class="concept-card card-red">
+    <h3><span class="icon-circle"><i class="fas fa-industry"></i></span> Ingeniería Industrial</h3>
+    <p><strong>Trabajo y energía en mecanismos:</strong> En el análisis de bielas y manivelas, la fuerza varía con el ángulo de rotación como funciones trigonométricas elevadas a potencias. El trabajo realizado por un pistón se calcula integrando estas funciones. También aparecen en el cálculo del <em>valor RMS</em> (root-mean-square) de corrientes alternas en líneas de producción.</p>
+    <div class="math-block">$$W = \int_0^{2\pi} F_0\sin^2(\theta)\cos(\theta)\,d\theta$$</div>
+  </div>
+
+  <div class="concept-card card-gold">
+    <h3><span class="icon-circle"><i class="fas fa-code"></i></span> Ingeniería de Software</h3>
+    <p><strong>Algoritmos gráficos y motores de física:</strong> Los motores de videojuegos y software de simulación necesitan calcular áreas, volúmenes y colisiones con superficies curvas. Las integrales trigonométricas aparecen en el cálculo de iluminación (shading), trayectorias y en algoritmos de ray tracing donde se integran funciones sobre hemisferios usando coordenadas esféricas.</p>
+    <div class="math-block">$$L_o = \int_{\Omega} f_r(\theta,\phi) L_i(\theta,\phi)\cos(\theta)\sin(\theta)\,d\theta\,d\phi$$</div>
+  </div>
+
+  <div class="concept-card card-green">
+    <h3><span class="icon-circle"><i class="fas fa-server"></i></span> Ingeniería de Sistemas</h3>
+    <p><strong>Análisis de sistemas y control:</strong> En teoría de control, las respuestas de sistemas a señales sinusoidales involucran productos de funciones trigonométricas con potencias. El análisis de estabilidad mediante la integral de energía de Lyapunov frecuentemente requiere evaluar estas integrales para determinar la estabilidad del sistema.</p>
+  </div>
+
+  <div class="concept-card card-blue">
+    <h3><span class="icon-circle"><i class="fas fa-database"></i></span> Ciencia de Datos</h3>
+    <p><strong>Análisis espectral y distribuciones circulares:</strong> En el análisis de datos periódicos (estacionalidad, ciclos), se usan distribuciones de Von Mises y análisis de Fourier. La normalización de estas distribuciones requiere resolver integrales de potencias trigonométricas. También aparecen en funciones kernel circulares para machine learning con datos angulares.</p>
+    <div class="math-block">$$\int_0^{2\pi} e^{\kappa\cos(\theta)}\,d\theta \quad \longrightarrow \quad \text{se expande usando potencias de }\cos(\theta)$$</div>
+  </div>
+
+  <div class="concept-card card-red">
+    <h3><span class="icon-circle"><i class="fas fa-broadcast-tower"></i></span> Telecomunicaciones</h3>
+    <p><strong>Potencia de señales y modulación:</strong> Al calcular la potencia promedio de señales AM/FM, se necesitan integrales como $\int\sin^2(\omega t)\cos^2(\omega t)\,dt$. En el diseño de antenas, el patrón de radiación involucra integrales de $\sin^m(\theta)\cos^n(\theta)$ sobre ángulos sólidos para determinar la directividad y ganancia.</p>
+    <div class="math-block">$$D = \frac{4\pi}{\int_0^{2\pi}\int_0^{\pi} F(\theta,\phi)\sin(\theta)\,d\theta\,d\phi}$$</div>
+  </div>
+
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" onclick="showSection('tips')"><i class="fas fa-arrow-left"></i> Anterior</button>
+    <button class="btn btn-primary" onclick="showSection('practice')" style="margin-left:12px">Siguiente: Práctica <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 8: PRÁCTICA -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section" id="sec-practice">
+  <span class="section-tag">Módulo 8</span>
+  <h2>Práctica con Retroalimentación</h2>
+  <p class="section-desc">Resuelve estos ejercicios. Selecciona la respuesta correcta y recibe retroalimentación inmediata.</p>
+
+  <div id="practice-questions"></div>
+
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" onclick="showSection('apps')"><i class="fas fa-arrow-left"></i> Anterior</button>
+    <button class="btn btn-primary" onclick="showSection('exam')" style="margin-left:12px">Ir a la Evaluación Final <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SECCIÓN 9: EVALUACIÓN -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section" id="sec-exam">
+  <span class="section-tag">Evaluación Final</span>
+  <h2>Evaluación por Carrera — 10 Preguntas</h2>
+  <p class="section-desc">Selecciona tu carrera para recibir 10 preguntas de aplicación específicas. Necesitas <strong>8/10</strong> para obtener tu certificación.</p>
+
+  <div id="exam-carrera-selector" class="carrera-selector">
+    <div class="carrera-opt" onclick="selectCarrera(this,'multimedia')"><i class="fas fa-film"></i>Ing. Multimedia</div>
+    <div class="carrera-opt" onclick="selectCarrera(this,'industrial')"><i class="fas fa-industry"></i>Ing. Industrial</div>
+    <div class="carrera-opt" onclick="selectCarrera(this,'software')"><i class="fas fa-code"></i>Ing. de Software</div>
+    <div class="carrera-opt" onclick="selectCarrera(this,'sistemas')"><i class="fas fa-server"></i>Ing. de Sistemas</div>
+    <div class="carrera-opt" onclick="selectCarrera(this,'datos')"><i class="fas fa-database"></i>Ciencia de Datos</div>
+    <div class="carrera-opt" onclick="selectCarrera(this,'telecom')"><i class="fas fa-broadcast-tower"></i>Telecomunicaciones</div>
+  </div>
+
+  <div id="student-name-input" style="display:none;margin-bottom:24px;">
+    <label style="font-weight:600;font-size:15px;display:block;margin-bottom:8px;">Ingresa tu nombre completo para la certificación:</label>
+    <input type="text" id="student-name" placeholder="Tu nombre completo" style="width:100%;max-width:400px;padding:12px 18px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:16px;font-family:inherit;outline:none;transition:.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+    <br>
+    <button class="btn btn-primary" onclick="startExam()" style="margin-top:16px"><i class="fas fa-play"></i> Comenzar Evaluación</button>
+  </div>
+
+  <div id="exam-questions" style="display:none"></div>
+
+  <div id="exam-progress" style="display:none">
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="exam-progress-bar" style="width:0%"></div>
+    </div>
+    <p id="exam-progress-text" style="text-align:center;font-size:14px;color:var(--text-light)"></p>
+  </div>
+
+  <div id="exam-submit" style="display:none;text-align:center;margin-top:24px">
+    <button class="btn btn-check" onclick="gradeExam()" style="font-size:16px;padding:16px 40px"><i class="fas fa-check-double"></i> Enviar y Calificar</button>
+  </div>
+
+  <div id="exam-results" style="display:none"></div>
+
+  <div id="certificate-area" class="certificate-container"></div>
+</div>
+
+<footer class="footer">
+  <p>&copy; 2026 Clase Interactiva — Fundación Universitaria Compensar (UCompensar)</p>
+  <p>Generado por Claude AI, Asistente Académico de Anthropic</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+const sectionMap = {
+  'intro':'sec-intro','identidades':'sec-identidades',
+  'caso1':'sec-caso1','caso2':'sec-caso2','caso3':'sec-caso3',
+  'tips':'sec-tips','apps':'sec-apps','practice':'sec-practice','exam':'sec-exam'
+};
+
+function showSection(key){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(sectionMap[key]).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const btns = document.querySelectorAll('.nav-btn');
+  const keys = Object.keys(sectionMap);
+  const idx = keys.indexOf(key);
+  if(idx>=0 && btns[idx]) btns[idx].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(key==='practice') renderPractice();
+  MathJax.typesetPromise && MathJax.typesetPromise();
+}
+
+// ═══════════════════════════════════════════
+// PRACTICE QUESTIONS
+// ═══════════════════════════════════════════
+const practiceData = [
+  {
+    q:'¿Qué caso aplica para $\\int \\sin^5(x)\\cos^2(x)\\,dx$?',
+    opts:['Caso 1 — potencia impar','Caso 2 — ambas pares','Caso 3 — tan/sec'],
+    correct:0,
+    fb_ok:'¡Correcto! $\\sin^5$ tiene exponente impar, así que es Caso 1. Separas $\\sin(x)$, sustituyes $u=\\cos(x)$.',
+    fb_no:'Revisa: $\\sin^5$ tiene exponente 5 (impar). Cuando al menos una potencia es impar, es Caso 1.'
+  },
+  {
+    q:'En $\\int \\sin^4(x)\\cos^2(x)\\,dx$, ¿qué identidad usarías primero?',
+    opts:['$\\sin^2=1-\\cos^2$','$\\sin^2=\\frac{1-\\cos(2x)}{2}$','$\\tan^2=\\sec^2-1$'],
+    correct:1,
+    fb_ok:'¡Exacto! Ambas potencias son pares (4 y 2), así que usas fórmulas de reducción de potencia (ángulo medio).',
+    fb_no:'Ambas potencias son pares → Caso 2. Debes usar las fórmulas de ángulo medio: $\\sin^2=\\frac{1-\\cos(2x)}{2}$.'
+  },
+  {
+    q:'Para $\\int \\tan^2(x)\\sec^4(x)\\,dx$, ¿qué separas?',
+    opts:['$\\sin(x)$','$\\sec^2(x)$ como $du$','$\\tan(x)$ como $du$'],
+    correct:1,
+    fb_ok:'¡Bien! $n=4$ es par → subcaso 3A. Separas $\\sec^2(x)$ y sustituyes $u=\\tan(x)$.',
+    fb_no:'Aquí $n=4$ (par). Según el subcaso 3A, separamos $\\sec^2(x)\\,dx$ como el $du$, con $u=\\tan(x)$.'
+  },
+  {
+    q:'¿Cuál es el resultado de $\\int \\sin(x)\\cos^3(x)\\,dx$?',
+    opts:['$-\\frac{\\cos^4(x)}{4}+C$','$\\frac{\\cos^4(x)}{4}+C$','$-\\frac{\\sin^4(x)}{4}+C$'],
+    correct:0,
+    fb_ok:'¡Perfecto! Con $u=\\cos(x)$, $du=-\\sin(x)\\,dx$: $-\\int u^3\\,du = -\\frac{u^4}{4}+C$.',
+    fb_no:'Usa $u=\\cos(x)$, $du=-\\sin(x)\\,dx$. La integral queda $-\\int u^3\\,du=-\\frac{\\cos^4(x)}{4}+C$.'
+  },
+  {
+    q:'En el Caso 2, ¿cuántas veces puedes necesitar aplicar la fórmula de reducción?',
+    opts:['Siempre una sola vez','Tantas veces como sea necesario hasta que no queden potencias pares','Solo dos veces'],
+    correct:1,
+    fb_ok:'¡Correcto! Se aplica repetidamente. Cada aplicación reduce a la mitad el exponente. Si queda $\\cos^2(4x)$, aplicas de nuevo.',
+    fb_no:'La fórmula se aplica tantas veces como sea necesario. Si al reducir aparece $\\cos^2(2x)$, reduces otra vez con argumento $2x$.'
+  }
+];
+
+let practiceRendered = false;
+function renderPractice(){
+  if(practiceRendered) return;
+  practiceRendered = true;
+  const container = document.getElementById('practice-questions');
+  let html = '';
+  practiceData.forEach((p,i)=>{
+    html += `<div class="quiz-card" id="pq-${i}">
+      <div class="quiz-num">Ejercicio ${i+1} de ${practiceData.length}</div>
+      <div class="quiz-question">${p.q}</div>
+      <div class="quiz-options">
+        ${p.opts.map((o,j)=>`<div class="quiz-option" onclick="checkPractice(${i},${j})">${o}</div>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="pfb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  MathJax.typesetPromise && MathJax.typesetPromise();
+}
+
+function checkPractice(qi,oi){
+  const card = document.getElementById('pq-'+qi);
+  if(card.classList.contains('correct')||card.classList.contains('wrong')) return;
+  const opts = card.querySelectorAll('.quiz-option');
+  const fb = document.getElementById('pfb-'+qi);
+  const p = practiceData[qi];
+  opts[oi].classList.add('selected');
+  if(oi === p.correct){
+    card.classList.add('correct');
+    opts[oi].classList.add('correct-answer');
+    fb.className='quiz-feedback show correct';
+    fb.innerHTML='<i class="fas fa-check-circle"></i> '+p.fb_ok;
+  } else {
+    card.classList.add('wrong');
+    opts[oi].classList.add('wrong-answer');
+    opts[p.correct].classList.add('correct-answer');
+    fb.className='quiz-feedback show wrong';
+    fb.innerHTML='<i class="fas fa-times-circle"></i> '+p.fb_no;
+  }
+  MathJax.typesetPromise && MathJax.typesetPromise();
+}
+
+// ═══════════════════════════════════════════
+// EXAM
+// ═══════════════════════════════════════════
+let selectedCarrera = null;
+let examAnswers = {};
+
+const carreraNames = {
+  multimedia:'Ingeniería Multimedia',
+  industrial:'Ingeniería Industrial',
+  software:'Ingeniería de Software',
+  sistemas:'Ingeniería de Sistemas',
+  datos:'Ciencia de Datos',
+  telecom:'Telecomunicaciones'
+};
+
+function selectCarrera(el, key){
+  document.querySelectorAll('.carrera-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCarrera = key;
+  document.getElementById('student-name-input').style.display='block';
+}
+
+const examQuestions = {
+  multimedia:[
+    {q:'En procesamiento de audio, para calcular la potencia promedio de $A\\sin^2(\\omega t)$, ¿qué tipo de integral resuelves?',opts:['Caso 1 — potencia impar','Caso 2 — potencia par','Caso 3 — tan/sec'],correct:1,
+     fb_ok:'Correcto. $\\sin^2$ es potencia par, usas $\\sin^2(x)=\\frac{1-\\cos(2x)}{2}$.',fb_no:'$\\sin^2$ es potencia par → Caso 2. Se usa la fórmula de ángulo medio.'},
+    {q:'Para la síntesis de sonido, $\\int_0^{2\\pi}\\sin^3(t)\\,dt$ da como resultado:',opts:['$0$','$\\frac{4}{3}$','$\\pi$'],correct:0,
+     fb_ok:'Correcto. $\\sin^3(t)$ es impar sobre un período completo $[0,2\\pi]$, la integral es 0.',fb_no:'En un período completo, $\\int_0^{2\\pi}\\sin^n(t)\\,dt=0$ cuando $n$ es impar.'},
+    {q:'En compresión de audio, $\\int \\sin^2(x)\\cos^2(x)\\,dx$ se resuelve usando:',opts:['$\\sin^2\\cos^2=\\frac{\\sin^2(2x)}{4}$','Sustitución $u=\\sin(x)$','Integración por partes'],correct:0,
+     fb_ok:'Exacto. Es Caso 2, y el truco $\\sin(x)\\cos(x)=\\frac{\\sin(2x)}{2}$ simplifica enormemente.',fb_no:'Ambas potencias pares → Caso 2. Usa $\\sin(x)\\cos(x)=\\frac{\\sin(2x)}{2}$.'},
+    {q:'El resultado de $\\int \\cos^4(x)\\,dx$ es:',opts:['$\\frac{3x}{8}+\\frac{\\sin(2x)}{4}+\\frac{\\sin(4x)}{32}+C$','$\\frac{\\cos^5(x)}{5}+C$','$\\frac{x}{4}+\\frac{\\sin(4x)}{16}+C$'],correct:0,
+     fb_ok:'¡Perfecto! Se aplica reducción de potencia dos veces.',fb_no:'$\\cos^4$ → Caso 2. Reduces: $\\cos^4=\\left(\\frac{1+\\cos 2x}{2}\\right)^2$, expandes y reduces de nuevo.'},
+    {q:'En rendering 3D, $\\int_0^{\\pi/2}\\sin(\\theta)\\cos^3(\\theta)\\,d\\theta$ se resuelve con:',opts:['$u=\\cos(\\theta)$, Caso 1','Fórmulas de ángulo medio','Integración por partes'],correct:0,
+     fb_ok:'$\\cos^3$ es impar → Caso 1. Con $u=\\cos(\\theta)$: $-\\int u^3\\,du$. Definida: $\\frac{1}{4}$.',fb_no:'$\\cos^3$ es impar → Caso 1. Separas $\\cos(\\theta)$, sustituyes $u=\\cos(\\theta)$.'},
+    {q:'En análisis de Fourier para video, $\\int \\sin^5(x)\\cos^2(x)\\,dx$ requiere separar:',opts:['$\\cos(x)\\,dx$','$\\sin(x)\\,dx$','$\\sec^2(x)\\,dx$'],correct:1,
+     fb_ok:'Correcto. $\\sin^5$ es impar → separas $\\sin(x)$, $u=\\cos(x)$.',fb_no:'La potencia impar es $\\sin^5$. Separas $\\sin(x)\\,dx$ y sustituyes $u=\\cos(x)$.'},
+    {q:'Para el cálculo de energía de una señal $f(t)=\\sin^2(t)\\cos(t)$, la integral $\\int\\sin^2(t)\\cos(t)\\,dt$ da:',opts:['$\\frac{\\sin^3(t)}{3}+C$','$-\\frac{\\cos^3(t)}{3}+C$','$\\frac{\\sin^2(t)}{2}+C$'],correct:0,
+     fb_ok:'$\\cos(t)$ es impar (exp. 1) → $u=\\sin(t)$, $du=\\cos(t)\\,dt$. $\\int u^2\\,du=\\frac{u^3}{3}$.',fb_no:'Caso 1: $\\cos^1$ es impar. Sustitución $u=\\sin(t)$, $du=\\cos(t)\\,dt$. Resultado: $\\frac{\\sin^3(t)}{3}+C$.'},
+    {q:'Al procesar una señal modulada con $\\int\\tan^2(x)\\sec^2(x)\\,dx$, el resultado es:',opts:['$\\frac{\\tan^3(x)}{3}+C$','$\\frac{\\sec^3(x)}{3}+C$','$\\tan(x)-x+C$'],correct:0,
+     fb_ok:'$n=2$ par → Caso 3A. $u=\\tan(x)$, $du=\\sec^2(x)\\,dx$. $\\int u^2\\,du=\\frac{u^3}{3}$.',fb_no:'Caso 3A: $u=\\tan(x)$, $du=\\sec^2(x)\\,dx$, integral queda $\\int u^2\\,du$.'},
+    {q:'En animación digital, la normalización de vectores usa $\\int_0^{\\pi}\\sin^3(\\theta)\\,d\\theta$. ¿Cuánto vale?',opts:['$\\frac{4}{3}$','$0$','$\\frac{2}{3}$'],correct:0,
+     fb_ok:'Con $u=\\cos\\theta$: $-\\int_{1}^{-1}(1-u^2)du=\\int_{-1}^{1}(1-u^2)du=2-\\frac{2}{3}=\\frac{4}{3}$.',fb_no:'$\\int_0^\\pi\\sin^3\\theta\\,d\\theta=\\frac{4}{3}$. Se resuelve con Caso 1, $u=\\cos\\theta$.'},
+    {q:'Para anti-aliasing en gráficos, ¿qué identidad convierte $\\sin^4(x)$ para integrar?',opts:['$\\sin^4=(\\frac{1-\\cos 2x}{2})^2$','$\\sin^4=(1-\\cos^2)^2$ y luego sustituir','$\\sin^4=\\sin^2\\cdot\\sin^2$ y separar un $\\sin$'],correct:0,
+     fb_ok:'Caso 2 (potencia par). Se usa la fórmula de ángulo medio elevada al cuadrado.',fb_no:'$\\sin^4$ es par → Caso 2. La fórmula es $\\sin^2(x)=\\frac{1-\\cos(2x)}{2}$, entonces $\\sin^4=\\left(\\frac{1-\\cos 2x}{2}\\right)^2$.'}
+  ],
+  industrial:[
+    {q:'Para calcular el trabajo de un pistón con $F=F_0\\sin^2(\\theta)$, la integral $\\int_0^{2\\pi}\\sin^2(\\theta)\\,d\\theta$ vale:',opts:['$\\pi$','$2\\pi$','$0$'],correct:0,
+     fb_ok:'$\\int_0^{2\\pi}\\sin^2\\theta\\,d\\theta=\\pi$. Se usa la fórmula de ángulo medio.',fb_no:'Caso 2: $\\sin^2=\\frac{1-\\cos 2\\theta}{2}$. Integrando: $\\frac{\\theta}{2}-\\frac{\\sin 2\\theta}{4}\\Big|_0^{2\\pi}=\\pi$.'},
+    {q:'El valor RMS de $I=I_0\\sin(\\omega t)$ requiere $\\sqrt{\\frac{1}{T}\\int_0^T\\sin^2(\\omega t)\\,dt}$. El resultado es:',opts:['$\\frac{I_0}{\\sqrt{2}}$','$I_0$','$\\frac{I_0}{2}$'],correct:0,
+     fb_ok:'Correcto. $I_{RMS}=\\frac{I_0}{\\sqrt{2}}\\approx 0.707\\,I_0$. Fundamental en ingeniería eléctrica industrial.',fb_no:'Al integrar $\\sin^2(\\omega t)$ sobre un período se obtiene $T/2$, así $I_{RMS}=I_0/\\sqrt{2}$.'},
+    {q:'En vibraciones mecánicas, $\\int\\sin^3(\\omega t)\\,dt$ se resuelve con:',opts:['Caso 1 — separar $\\sin(\\omega t)$','Caso 2 — fórmula de ángulo medio','Integración por partes'],correct:0,
+     fb_ok:'Impar → Caso 1. $\\sin^3=\\sin^2\\cdot\\sin=(1-\\cos^2)\\sin$, $u=\\cos(\\omega t)$.',fb_no:'Exponente 3 es impar → Caso 1.'},
+    {q:'$\\int\\cos^4(x)\\sin^2(x)\\,dx$ es un caso de:',opts:['Caso 2 — ambas pares','Caso 1 — potencia impar','Caso 3 — tan/sec'],correct:0,
+     fb_ok:'Ambas pares (4 y 2) → Caso 2. Se usan fórmulas de reducción.',fb_no:'4 y 2 son pares → Caso 2.'},
+    {q:'En control de calidad, la varianza de un proceso cíclico usa $\\int_0^{\\pi}\\sin^4(x)\\,dx$. ¿Qué fórmula aplica primero?',opts:['$\\sin^4=(\\frac{1-\\cos 2x}{2})^2$','$\\sin^4=(1-\\cos^2)^2$','$u=\\sin(x)$'],correct:0,
+     fb_ok:'Potencia par → Caso 2 con fórmula de ángulo medio.',fb_no:'Par → Caso 2.'},
+    {q:'El torque en un motor $\\tau=k\\sin(\\theta)\\cos^3(\\theta)$ requiere $\\int\\sin(\\theta)\\cos^3(\\theta)\\,d\\theta$. Resultado:',opts:['$-\\frac{\\cos^4(\\theta)}{4}+C$','$\\frac{\\sin^4(\\theta)}{4}+C$','$-\\frac{\\sin^2(\\theta)\\cos^2(\\theta)}{4}+C$'],correct:0,
+     fb_ok:'Caso 1: $\\sin^1$ impar. $u=\\cos\\theta$, $du=-\\sin\\theta\\,d\\theta$. $-\\int u^3\\,du=-\\frac{u^4}{4}$.',fb_no:'$\\sin^1$ es impar → Caso 1 con $u=\\cos\\theta$.'},
+    {q:'Para optimizar la potencia de un generador: $\\int\\sin^2(x)\\cos^2(x)\\,dx=$',opts:['$\\frac{x}{8}-\\frac{\\sin(4x)}{32}+C$','$\\frac{\\sin^3(x)\\cos(x)}{4}+C$','$\\frac{x}{4}+C$'],correct:0,
+     fb_ok:'Ambas pares. $\\sin^2\\cos^2=\\frac{\\sin^2(2x)}{4}=\\frac{1-\\cos(4x)}{8}$.',fb_no:'Caso 2. $\\sin^2\\cos^2=\\frac{\\sin^2(2x)}{4}$.'},
+    {q:'$\\int\\tan^4(x)\\,dx$ se empieza escribiendo como:',opts:['$\\int\\tan^2(x)(\\sec^2(x)-1)\\,dx$','$\\int(\\sin^4/\\cos^4)\\,dx$','$\\int(\\sec^4-1)\\,dx$'],correct:0,
+     fb_ok:'Caso 3: $\\tan^4=\\tan^2\\cdot\\tan^2=\\tan^2(\\sec^2-1)$.',fb_no:'$\\tan^2(x)=\\sec^2(x)-1$. Se reemplaza para reducir.'},
+    {q:'La eficiencia de una biela depende de $\\int_0^{\\pi/2}\\sin^2(\\theta)\\cos(\\theta)\\,d\\theta$. ¿Cuánto vale?',opts:['$\\frac{1}{3}$','$\\frac{1}{2}$','$\\frac{\\pi}{4}$'],correct:0,
+     fb_ok:'Caso 1: $u=\\sin\\theta$. $\\int_0^1 u^2\\,du=\\frac{1}{3}$.',fb_no:'$\\cos$ tiene exponente impar (1). $u=\\sin\\theta$, $\\int_0^1 u^2\\,du=1/3$.'},
+    {q:'En análisis de fatiga, $\\int\\sin^6(x)\\,dx$ requiere aplicar la fórmula de reducción:',opts:['Tres veces','Una vez','No se puede con fórmulas de reducción'],correct:0,
+     fb_ok:'$\\sin^6=(\\sin^2)^3$. Aplicar una vez da $\\cos^2(2x)$, luego otra vez, posiblemente una tercera.',fb_no:'$\\sin^6$ es par → Caso 2. Se necesitan múltiples aplicaciones de la fórmula de reducción.'}
+  ],
+  software:[
+    {q:'En ray tracing, $\\int_0^{\\pi/2}\\sin(\\theta)\\cos(\\theta)\\,d\\theta$ para la reflexión lambertiana vale:',opts:['$\\frac{1}{2}$','$1$','$\\frac{\\pi}{4}$'],correct:0,
+     fb_ok:'Caso 1: $u=\\sin\\theta$ o $u=\\cos\\theta$. Resultado: $\\frac{1}{2}$.',fb_no:'Ambos exponentes impares. $u=\\sin\\theta$: $\\int_0^1 u\\,du=\\frac{1}{2}$.'},
+    {q:'Un shader calcula $\\int\\cos^3(x)\\,dx$. Resultado:',opts:['$\\sin(x)-\\frac{\\sin^3(x)}{3}+C$','$\\frac{\\cos^4(x)}{4}+C$','$3\\cos^2(x)\\sin(x)+C$'],correct:0,
+     fb_ok:'Caso 1: $\\cos^3=\\cos^2\\cdot\\cos=(1-\\sin^2)\\cos$. $u=\\sin x$. $\\int(1-u^2)du$.',fb_no:'Impar → Caso 1: $u=\\sin x$, resultado $u-u^3/3+C=\\sin x-\\sin^3 x/3+C$.'},
+    {q:'Para simulación de partículas: $\\int\\sin^4(x)\\cos^2(x)\\,dx$ es del tipo:',opts:['Caso 2 — ambas pares','Caso 1 — potencia impar','Caso 3'],correct:0,
+     fb_ok:'4 y 2 son pares → Caso 2.',fb_no:'Ambas pares → Caso 2.'},
+    {q:'En un motor de juegos, la integral $\\int\\tan(x)\\sec^3(x)\\,dx$ se resuelve con:',opts:['$u=\\sec(x)$, subcaso 3B','$u=\\tan(x)$, subcaso 3A','Fórmulas de ángulo medio'],correct:0,
+     fb_ok:'$m=1$ impar → 3B. $u=\\sec x$, $du=\\sec x\\tan x\\,dx$. $\\int u^2\\,du=\\frac{\\sec^3 x}{3}$.',fb_no:'$\\tan^1$ es impar → subcaso 3B: separar $\\sec(x)\\tan(x)\\,dx$, $u=\\sec(x)$.'},
+    {q:'El cálculo de iluminación global requiere $\\int_0^{\\pi/2}\\sin^3(\\theta)\\cos(\\theta)\\,d\\theta$:',opts:['$\\frac{1}{4}$','$\\frac{1}{3}$','$\\frac{2}{3}$'],correct:0,
+     fb_ok:'$u=\\sin\\theta$: $\\int_0^1 u^3\\,du=\\frac{1}{4}$.',fb_no:'Caso 1: $u=\\sin\\theta$, $\\int_0^1 u^3\\,du=1/4$.'},
+    {q:'$\\int\\sin^2(x)\\cos^4(x)\\,dx$ — ¿primer paso?',opts:['Aplicar fórmulas de ángulo medio a ambas','Separar $\\cos(x)$','$u=\\sin(x)$'],correct:0,
+     fb_ok:'Ambas pares → Caso 2. Se aplican fórmulas de reducción.',fb_no:'2 y 4 son pares → Caso 2.'},
+    {q:'En optimización de shaders, $\\int\\sec^4(x)\\,dx=$',opts:['$\\tan(x)+\\frac{\\tan^3(x)}{3}+C$','$\\frac{\\sec^5(x)}{5}+C$','$4\\sec^3(x)\\tan(x)+C$'],correct:0,
+     fb_ok:'$\\sec^4=\\sec^2\\cdot\\sec^2=(1+\\tan^2)\\sec^2$. $u=\\tan x$: $\\int(1+u^2)du$.',fb_no:'Caso 3A: $\\sec^4=(1+\\tan^2)\\sec^2$, $u=\\tan x$.'},
+    {q:'Para física de colisiones: $\\int\\sin(x)\\cos^5(x)\\,dx$. ¿Qué sustituyes?',opts:['$u=\\cos(x)$','$u=\\sin(x)$','$u=\\tan(x)$'],correct:0,
+     fb_ok:'$\\sin^1$ es impar → Caso 1. $u=\\cos(x)$, $du=-\\sin(x)\\,dx$.',fb_no:'$\\sin$ tiene exponente impar (1). $u=\\cos x$, $du=-\\sin x\\,dx$.'},
+    {q:'$\\int_0^{\\pi}\\cos^2(x)\\,dx$ para normalización de curvas vale:',opts:['$\\frac{\\pi}{2}$','$\\pi$','$0$'],correct:0,
+     fb_ok:'$\\cos^2=\\frac{1+\\cos 2x}{2}$. $\\int_0^\\pi=\\frac{\\pi}{2}+0=\\frac{\\pi}{2}$.',fb_no:'Caso 2: $\\int_0^\\pi\\frac{1+\\cos 2x}{2}dx=\\frac{\\pi}{2}$.'},
+    {q:'En algoritmos de curvas Bézier, $\\int\\sin^5(x)\\,dx$ necesita convertir $\\sin^4(x)$ como:',opts:['$(1-\\cos^2(x))^2$','$(\\frac{1-\\cos 2x}{2})^2$','$\\sin^2(x)\\cdot\\sin^2(x)$'],correct:0,
+     fb_ok:'Caso 1: separas $\\sin x$, el $\\sin^4=(1-\\cos^2)^2$, $u=\\cos x$.',fb_no:'Impar → Caso 1. Se usa identidad pitagórica: $\\sin^4=(1-\\cos^2)^2$.'}
+  ],
+  sistemas:[
+    {q:'En teoría de control, $\\int\\sin^2(\\omega t)\\,dt$ para la energía de una señal periódica:',opts:['$\\frac{t}{2}-\\frac{\\sin(2\\omega t)}{4\\omega}+C$','$-\\frac{\\cos^2(\\omega t)}{2\\omega}+C$','$\\frac{\\sin^3(\\omega t)}{3\\omega}+C$'],correct:0,
+     fb_ok:'Caso 2: $\\sin^2(\\omega t)=\\frac{1-\\cos(2\\omega t)}{2}$.',fb_no:'$\\sin^2$ es par → Caso 2 con la fórmula de ángulo medio.'},
+    {q:'Para la estabilidad de Lyapunov, $\\int\\sin^3(x)\\cos(x)\\,dx=$',opts:['$\\frac{\\sin^4(x)}{4}+C$','$-\\frac{\\cos^4(x)}{4}+C$','$\\frac{\\sin^2(x)\\cos^2(x)}{4}+C$'],correct:0,
+     fb_ok:'$\\cos^1$ impar → $u=\\sin x$, $du=\\cos x\\,dx$. $\\int u^3 du=u^4/4$.',fb_no:'Caso 1: $u=\\sin x$, $\\int u^3 du=\\sin^4(x)/4+C$.'},
+    {q:'La respuesta frecuencial de un sistema a $\\int\\sin^2(x)\\cos^2(x)\\,dx=$',opts:['$\\frac{x}{8}-\\frac{\\sin(4x)}{32}+C$','$\\frac{\\sin^3(x)}{3}+C$','$\\frac{x}{4}+C$'],correct:0,
+     fb_ok:'Ambas pares → $\\sin^2\\cos^2=\\frac{\\sin^2(2x)}{4}=\\frac{1-\\cos 4x}{8}$.',fb_no:'Caso 2: $\\sin^2\\cos^2=\\frac{1-\\cos 4x}{8}$.'},
+    {q:'En análisis de redes, $\\int\\tan^2(x)\\,dx=$',opts:['$\\tan(x)-x+C$','$\\frac{\\tan^3(x)}{3}+C$','$\\sec^2(x)+C$'],correct:0,
+     fb_ok:'$\\tan^2=\\sec^2-1$. $\\int(\\sec^2-1)dx=\\tan x-x+C$.',fb_no:'$\\tan^2(x)=\\sec^2(x)-1$. Integrar: $\\tan(x)-x+C$.'},
+    {q:'Para modelado de sistemas, $\\int\\cos^5(x)\\,dx$ primero separas:',opts:['$\\cos(x)\\,dx$ y usas $u=\\sin(x)$','$\\cos^2(x)\\,dx$ con fórmula de ángulo medio','Integración por partes'],correct:0,
+     fb_ok:'$\\cos^5$ impar → Caso 1. Separas $\\cos x$, $u=\\sin x$.',fb_no:'Exponente 5 impar → Caso 1.'},
+    {q:'$\\int_0^{2\\pi}\\cos^4(t)\\,dt$ para la energía de un sistema vale:',opts:['$\\frac{3\\pi}{4}$','$\\frac{\\pi}{2}$','$2\\pi$'],correct:0,
+     fb_ok:'Caso 2: usando la reducción, $\\int_0^{2\\pi}\\cos^4=\\frac{3\\pi}{4}$.',fb_no:'Caso 2: $\\cos^4=\\frac{3+4\\cos 2t+\\cos 4t}{8}$, integrando sobre $[0,2\\pi]$ da $3\\pi/4$.'},
+    {q:'En señales digitales, $\\int\\sin(x)\\cos^3(x)\\,dx=$',opts:['$-\\frac{\\cos^4(x)}{4}+C$','$\\frac{\\sin^2(x)}{2}+C$','$-\\frac{\\sin^4(x)}{4}+C$'],correct:0,
+     fb_ok:'$\\sin^1$ impar → $u=\\cos x$, $du=-\\sin x\\,dx$. $-\\int u^3 du$.',fb_no:'Caso 1: $u=\\cos x$, resultado $-\\cos^4 x/4+C$.'},
+    {q:'$\\int\\sec^2(x)\\tan^3(x)\\,dx$ — ¿qué sustitución?',opts:['$u=\\tan(x)$','$u=\\sec(x)$','$u=\\sin(x)$'],correct:0,
+     fb_ok:'$n=2$ par → 3A. $u=\\tan x$, $du=\\sec^2 x\\,dx$. $\\int u^3 du$.',fb_no:'Subcaso 3A: $u=\\tan x$, $du=\\sec^2 x\\,dx$.'},
+    {q:'En automatización, $\\int\\sin^4(x)\\,dx$ requiere reducción de potencia. ¿Cuántas veces?',opts:['Dos veces','Una vez','Tres veces'],correct:0,
+     fb_ok:'$\\sin^4=(\\frac{1-\\cos 2x}{2})^2$, da $\\cos^2(2x)$ que se reduce una vez más → 2 veces.',fb_no:'$\\sin^4$ → primera reducción da $\\cos^2(2x)$ → segunda reducción. Total: 2 veces.'},
+    {q:'Para filtros digitales, $\\int_0^{\\pi/2}\\sin^2(x)\\cos(x)\\,dx=$',opts:['$\\frac{1}{3}$','$\\frac{1}{2}$','$\\frac{\\pi}{4}$'],correct:0,
+     fb_ok:'Caso 1: $u=\\sin x$. $\\int_0^1 u^2 du=1/3$.',fb_no:'$\\cos^1$ impar. $u=\\sin x$: $\\int_0^1 u^2 du=1/3$.'}
+  ],
+  datos:[
+    {q:'Para normalizar distribuciones circulares, $\\int_0^{2\\pi}\\cos^2(\\theta)\\,d\\theta=$',opts:['$\\pi$','$2\\pi$','$0$'],correct:0,
+     fb_ok:'Caso 2: $\\cos^2=\\frac{1+\\cos 2\\theta}{2}$. Integral: $\\pi$.',fb_no:'$\\cos^2=\\frac{1+\\cos 2\\theta}{2}$, integral sobre $[0,2\\pi]$ es $\\pi$.'},
+    {q:'En análisis espectral, $\\int\\sin^3(x)\\cos^2(x)\\,dx$ — primer paso:',opts:['Separar $\\sin(x)$, $u=\\cos(x)$','Fórmulas de ángulo medio','$u=\\tan(x)$'],correct:0,
+     fb_ok:'$\\sin^3$ impar → Caso 1.',fb_no:'Exponente 3 impar → Caso 1.'},
+    {q:'La varianza de datos cíclicos usa $\\int_0^{2\\pi}\\sin^4(\\theta)\\,d\\theta=$',opts:['$\\frac{3\\pi}{4}$','$\\frac{\\pi}{2}$','$\\pi$'],correct:0,
+     fb_ok:'Caso 2: $\\sin^4$ par, reducción de potencia dos veces. Resultado: $3\\pi/4$.',fb_no:'$\\sin^4$ par → Caso 2. $\\int_0^{2\\pi}\\sin^4=3\\pi/4$.'},
+    {q:'En funciones kernel circulares, $\\int\\cos^3(x)\\,dx=$',opts:['$\\sin(x)-\\frac{\\sin^3(x)}{3}+C$','$\\frac{\\cos^4(x)}{4}+C$','$3\\cos^2(x)\\sin(x)+C$'],correct:0,
+     fb_ok:'Impar → Caso 1. $u=\\sin x$: $\\int(1-u^2)du=u-u^3/3$.',fb_no:'Caso 1: $\\cos^3=(1-\\sin^2)\\cos$, $u=\\sin x$.'},
+    {q:'Para suavizado de series temporales, $\\int\\sin^2(x)\\cos^2(x)\\,dx$ se simplifica a:',opts:['$\\frac{x}{8}-\\frac{\\sin 4x}{32}+C$','$\\frac{x}{4}-\\frac{\\sin 2x}{4}+C$','$\\frac{\\cos^4 x}{4}+C$'],correct:0,
+     fb_ok:'Caso 2: $\\sin^2\\cos^2=\\frac{1-\\cos 4x}{8}$.',fb_no:'Ambas pares → Caso 2.'},
+    {q:'En PCA con datos angulares, $\\int\\sin(x)\\cos^5(x)\\,dx$. ¿Tipo de caso?',opts:['Caso 1','Caso 2','Caso 3'],correct:0,
+     fb_ok:'$\\sin^1$ impar → Caso 1.',fb_no:'$\\sin$ tiene exponente 1 (impar) → Caso 1.'},
+    {q:'$\\int\\tan^2(x)\\sec^2(x)\\,dx$ para funciones de distribución:',opts:['$\\frac{\\tan^3(x)}{3}+C$','$\\tan^2(x)+C$','$\\frac{\\sec^3(x)}{3}+C$'],correct:0,
+     fb_ok:'Caso 3A: $u=\\tan x$, $du=\\sec^2 x\\,dx$. $\\int u^2 du=u^3/3$.',fb_no:'$n=2$ par → 3A: $u=\\tan x$.'},
+    {q:'Para correlación cruzada espectral, $\\int_0^{\\pi}\\sin^2(x)\\,dx=$',opts:['$\\frac{\\pi}{2}$','$\\pi$','$0$'],correct:0,
+     fb_ok:'$\\sin^2=\\frac{1-\\cos 2x}{2}$. $\\int_0^\\pi=\\frac{\\pi}{2}$.',fb_no:'Caso 2. Resultado: $\\pi/2$.'},
+    {q:'En regresión periódica, $\\int\\sin^5(x)\\,dx$ se desarrolla separando:',opts:['$\\sin(x)$ y convirtiendo $\\sin^4=(1-\\cos^2)^2$','Fórmulas de ángulo medio','$\\sec(x)\\tan(x)$'],correct:0,
+     fb_ok:'Impar → Caso 1. $\\sin^5=\\sin^4\\cdot\\sin=(1-\\cos^2)^2\\sin$.',fb_no:'Exponente 5 impar → Caso 1.'},
+    {q:'Para estacionalidad en modelos de ML, $\\int_0^{\\pi/2}\\cos^4(x)\\sin(x)\\,dx=$',opts:['$\\frac{1}{5}$','$\\frac{1}{4}$','$\\frac{4}{15}$'],correct:0,
+     fb_ok:'$\\sin^1$ impar → $u=\\cos x$. $-\\int_1^0 u^4 du=\\int_0^1 u^4 du=1/5$.',fb_no:'Caso 1: $u=\\cos x$. $\\int_0^1 u^4 du=1/5$.'}
+  ],
+  telecom:[
+    {q:'La potencia promedio de una señal AM: $\\frac{1}{T}\\int_0^T\\sin^2(\\omega t)\\,dt=$',opts:['$\\frac{1}{2}$','$1$','$\\frac{\\pi}{2}$'],correct:0,
+     fb_ok:'Caso 2: $\\sin^2=\\frac{1-\\cos 2\\omega t}{2}$, promedio sobre un período = $1/2$.',fb_no:'$\\sin^2=\\frac{1-\\cos 2\\omega t}{2}$, promedio = $1/2$.'},
+    {q:'En modulación FM, $\\int\\sin^3(\\omega t)\\cos(\\omega t)\\,dt=$',opts:['$\\frac{\\sin^4(\\omega t)}{4\\omega}+C$','$-\\frac{\\cos^4(\\omega t)}{4\\omega}+C$','$\\frac{\\sin^2(\\omega t)}{2\\omega}+C$'],correct:0,
+     fb_ok:'$\\cos^1$ impar → $u=\\sin(\\omega t)$, $du=\\omega\\cos(\\omega t)\\,dt$. $\\frac{1}{\\omega}\\int u^3 du$.',fb_no:'Caso 1: $u=\\sin(\\omega t)$, resultado $\\frac{\\sin^4(\\omega t)}{4\\omega}+C$.'},
+    {q:'El patrón de radiación de antena usa $\\int_0^{\\pi}\\sin^3(\\theta)\\,d\\theta=$',opts:['$\\frac{4}{3}$','$0$','$\\frac{2}{3}$'],correct:0,
+     fb_ok:'Caso 1: $u=\\cos\\theta$. $\\int_{-1}^{1}(1-u^2)du=\\frac{4}{3}$.',fb_no:'$\\int_0^\\pi\\sin^3\\theta\\,d\\theta=4/3$. Caso 1 con $u=\\cos\\theta$.'},
+    {q:'Para diseño de filtros: $\\int\\sin^2(x)\\cos^4(x)\\,dx$ es:',opts:['Caso 2 — ambas pares','Caso 1','Caso 3'],correct:0,
+     fb_ok:'2 y 4 son pares → Caso 2.',fb_no:'Ambas pares → Caso 2.'},
+    {q:'La densidad espectral de potencia requiere $\\int_0^{2\\pi}\\cos^4(x)\\,dx=$',opts:['$\\frac{3\\pi}{4}$','$\\frac{\\pi}{2}$','$2\\pi$'],correct:0,
+     fb_ok:'Caso 2. Reducción de potencia dos veces da $3\\pi/4$.',fb_no:'$\\cos^4$ par → Caso 2. Resultado: $3\\pi/4$.'},
+    {q:'En modulación QAM, $\\int\\sin^2(x)\\cos^2(x)\\,dx=$',opts:['$\\frac{x}{8}-\\frac{\\sin(4x)}{32}+C$','$\\frac{x}{4}+C$','$\\frac{\\sin^3 x\\cos x}{4}+C$'],correct:0,
+     fb_ok:'Caso 2. $\\sin^2\\cos^2=\\frac{1-\\cos 4x}{8}$.',fb_no:'Caso 2: $\\sin^2\\cos^2=\\frac{\\sin^2(2x)}{4}=\\frac{1-\\cos 4x}{8}$.'},
+    {q:'Para antenas parabólicas: $\\int\\sin(\\theta)\\cos^3(\\theta)\\,d\\theta=$',opts:['$-\\frac{\\cos^4(\\theta)}{4}+C$','$\\frac{\\sin^4(\\theta)}{4}+C$','$-\\frac{\\sin^2(\\theta)}{2}+C$'],correct:0,
+     fb_ok:'Caso 1: $\\sin^1$ impar, $u=\\cos\\theta$.',fb_no:'$\\sin^1$ impar → $u=\\cos\\theta$, $-\\int u^3 du=-u^4/4$.'},
+    {q:'En análisis de ruido, $\\int\\tan^2(x)\\,dx=$',opts:['$\\tan(x)-x+C$','$\\frac{\\tan^3(x)}{3}+C$','$\\sec^2(x)+C$'],correct:0,
+     fb_ok:'$\\tan^2=\\sec^2-1$. $\\int(\\sec^2-1)dx=\\tan x-x+C$.',fb_no:'Caso 3: $\\tan^2=\\sec^2-1$.'},
+    {q:'La ganancia de antena: $\\int_0^{\\pi/2}\\sin^2(\\theta)\\cos(\\theta)\\,d\\theta=$',opts:['$\\frac{1}{3}$','$\\frac{1}{2}$','$\\frac{\\pi}{4}$'],correct:0,
+     fb_ok:'$\\cos^1$ impar → $u=\\sin\\theta$: $\\int_0^1 u^2 du=1/3$.',fb_no:'Caso 1: $u=\\sin\\theta$, $\\int_0^1 u^2 du=1/3$.'},
+    {q:'Para ecualización de canal, $\\int\\sec^4(x)\\,dx=$',opts:['$\\tan(x)+\\frac{\\tan^3(x)}{3}+C$','$\\frac{\\sec^5(x)}{5}+C$','$4\\sec^3(x)\\tan(x)+C$'],correct:0,
+     fb_ok:'Caso 3A: $\\sec^4=(1+\\tan^2)\\sec^2$, $u=\\tan x$.',fb_no:'$n=4$ par → 3A: $u=\\tan x$. $\\int(1+u^2)du=u+u^3/3$.'}
+  ]
+};
+
+function startExam(){
+  const name = document.getElementById('student-name').value.trim();
+  if(!name){alert('Por favor ingresa tu nombre.');return;}
+  if(!selectedCarrera){alert('Selecciona tu carrera.');return;}
+
+  examAnswers = {};
+  const qs = examQuestions[selectedCarrera];
+  const container = document.getElementById('exam-questions');
+  let html = '';
+  qs.forEach((q,i)=>{
+    html += `<div class="quiz-card" id="eq-${i}">
+      <div class="quiz-num">Pregunta ${i+1} de 10 — ${carreraNames[selectedCarrera]}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o,j)=>`<div class="quiz-option" onclick="selectExamAnswer(${i},${j},this)">${o}</div>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="efb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  container.style.display='block';
+  document.getElementById('exam-progress').style.display='block';
+  document.getElementById('exam-submit').style.display='block';
+  document.getElementById('exam-carrera-selector').style.display='none';
+  document.getElementById('student-name-input').style.display='none';
+  updateExamProgress();
+  MathJax.typesetPromise && MathJax.typesetPromise();
+}
+
+function selectExamAnswer(qi,oi,el){
+  const card = document.getElementById('eq-'+qi);
+  if(card.classList.contains('correct')||card.classList.contains('wrong')) return;
+  card.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  examAnswers[qi]=oi;
+  updateExamProgress();
+}
+
+function updateExamProgress(){
+  const answered = Object.keys(examAnswers).length;
+  document.getElementById('exam-progress-bar').style.width=(answered*10)+'%';
+  document.getElementById('exam-progress-text').textContent=`${answered}/10 respondidas`;
+}
+
+function gradeExam(){
+  if(Object.keys(examAnswers).length<10){
+    alert('Debes responder las 10 preguntas antes de enviar.');return;
+  }
+  const qs = examQuestions[selectedCarrera];
+  let score = 0;
+  qs.forEach((q,i)=>{
+    const card = document.getElementById('eq-'+i);
+    const opts = card.querySelectorAll('.quiz-option');
+    const fb = document.getElementById('efb-'+i);
+    const selected = examAnswers[i];
+    if(selected===q.correct){
+      score++;
+      card.classList.add('correct');
+      opts[selected].classList.add('correct-answer');
+      fb.className='quiz-feedback show correct';
+      fb.innerHTML='<i class="fas fa-check-circle"></i> '+q.fb_ok;
+    } else {
+      card.classList.add('wrong');
+      opts[selected].classList.add('wrong-answer');
+      opts[q.correct].classList.add('correct-answer');
+      fb.className='quiz-feedback show wrong';
+      fb.innerHTML='<i class="fas fa-times-circle"></i> '+q.fb_no;
+    }
+  });
+
+  document.getElementById('exam-submit').style.display='none';
+
+  const resultsDiv = document.getElementById('exam-results');
+  const pass = score >= 8;
+  resultsDiv.innerHTML=`
+    <div class="score-display">
+      <p style="font-size:18px;color:var(--text-mid);margin-bottom:8px">Tu resultado</p>
+      <div class="score-big ${pass?'pass':'fail'}">${score}/10</div>
+      <p style="font-size:20px;font-weight:600;margin-top:12px;color:${pass?'var(--green)':'var(--accent)'}">
+        ${pass?'🎉 ¡APROBADO! Has obtenido tu certificación.':'Necesitas 8/10 para certificarte. ¡Sigue practicando!'}
+      </p>
+      ${pass?'<button class="btn-cert" onclick="generateCertificate()"><i class="fas fa-certificate"></i> Descargar Certificación HTML</button>':'<button class="btn btn-outline" onclick="resetExam()" style="margin-top:16px"><i class="fas fa-redo"></i> Intentar de nuevo</button>'}
+    </div>`;
+  resultsDiv.style.display='block';
+  MathJax.typesetPromise && MathJax.typesetPromise();
+  resultsDiv.scrollIntoView({behavior:'smooth'});
+}
+
+function resetExam(){
+  examAnswers={};
+  document.getElementById('exam-questions').style.display='none';
+  document.getElementById('exam-progress').style.display='none';
+  document.getElementById('exam-submit').style.display='none';
+  document.getElementById('exam-results').style.display='none';
+  document.getElementById('exam-carrera-selector').style.display='grid';
+  document.getElementById('student-name-input').style.display='block';
+  document.querySelectorAll('.carrera-opt').forEach(e=>e.classList.remove('selected'));
+  selectedCarrera=null;
+}
+
+function generateCertificate(){
+  const name = document.getElementById('student-name').value.trim();
+  const carrera = carreraNames[selectedCarrera];
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'});
+  const certId = 'UCOMP-TRIG-'+now.getFullYear()+'-'+Math.random().toString(36).substr(2,8).toUpperCase();
+
+  const certHTML = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificación — ${name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@page{size:landscape;margin:0}
+body{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;background:#f0f4f8;
+  font-family:'Source Sans 3',sans-serif;
+}
+.cert{
+  width:960px;height:680px;
+  background:#fff;position:relative;
+  box-shadow:0 8px 40px rgba(0,0,0,.12);
+  overflow:hidden;
+}
+.cert-border{
+  position:absolute;top:20px;left:20px;right:20px;bottom:20px;
+  border:3px solid #1a365d;
+  border-radius:4px;
+}
+.cert-border-inner{
+  position:absolute;top:28px;left:28px;right:28px;bottom:28px;
+  border:1px solid #d69e2e;
+}
+.cert-content{
+  position:relative;z-index:1;
+  padding:60px 80px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  height:100%;text-align:center;
+}
+.cert-logo{
+  font-size:13px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:#1a365d;
+  background:#f0f4f8;padding:8px 24px;border-radius:30px;
+  margin-bottom:20px;
+}
+.cert-title{
+  font-family:'Playfair Display',serif;
+  font-size:36px;font-weight:800;
+  color:#1a365d;margin-bottom:6px;
+}
+.cert-subtitle{
+  font-size:14px;color:#718096;
+  letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:28px;
+}
+.cert-name{
+  font-family:'Playfair Display',serif;
+  font-size:32px;font-weight:700;
+  color:#e53e3e;
+  border-bottom:2px solid #d69e2e;
+  padding-bottom:8px;margin-bottom:20px;
+}
+.cert-desc{
+  font-size:15px;color:#4a5568;
+  max-width:600px;line-height:1.6;
+  margin-bottom:24px;
+}
+.cert-meta{
+  display:flex;gap:60px;
+  font-size:13px;color:#718096;
+  margin-top:auto;
+}
+.cert-meta div{text-align:center}
+.cert-meta strong{display:block;color:#1a365d;font-size:14px;margin-bottom:2px}
+.corner{position:absolute;width:60px;height:60px;}
+.corner-tl{top:32px;left:32px;border-top:3px solid #d69e2e;border-left:3px solid #d69e2e}
+.corner-tr{top:32px;right:32px;border-top:3px solid #d69e2e;border-right:3px solid #d69e2e}
+.corner-bl{bottom:32px;left:32px;border-bottom:3px solid #d69e2e;border-left:3px solid #d69e2e}
+.corner-br{bottom:32px;right:32px;border-bottom:3px solid #d69e2e;border-right:3px solid #d69e2e}
+@media print{body{background:#fff}.cert{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="cert">
+  <div class="cert-border"></div>
+  <div class="cert-border-inner"></div>
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+  <div class="cert-content">
+    <div class="cert-logo">Fundación Universitaria Compensar — UCompensar</div>
+    <div class="cert-title">Certificado de Competencia</div>
+    <div class="cert-subtitle">Integración de Potencias de Funciones Trigonométricas</div>
+    <div class="cert-name">${name}</div>
+    <div class="cert-desc">
+      Ha completado satisfactoriamente la evaluación de competencias en
+      <strong>Integración de Potencias Trigonométricas</strong>
+      aplicada al programa de <strong>${carrera}</strong>,
+      demostrando dominio de los tres casos fundamentales y sus aplicaciones profesionales.
+    </div>
+    <div class="cert-meta">
+      <div><strong>Fecha</strong>${dateStr}</div>
+      <div><strong>Programa</strong>${carrera}</div>
+      <div><strong>ID</strong>${certId}</div>
+      <div><strong>Expedido por</strong>Claude AI — UCompensar</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+
+  const blob = new Blob([certHTML],{type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Certificacion_${name.replace(/\s+/g,'_')}_UCompensar.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
