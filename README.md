@@ -1,0 +1,1 @@
+# Certificado-Potencias-de-Funciones-Trigonometricas
